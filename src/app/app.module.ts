@@ -11,6 +11,7 @@ import { HttpModule } from '@angular/http';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthService } from '../providers/auth-service/auth-service';
+import { ServiveSingletonProvider } from '../providers/servive-singleton/servive-singleton';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { AuthService } from '../providers/auth-service/auth-service';
     StatusBar,
     SplashScreen,Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthService
+    AuthService,
+    ServiveSingletonProvider
   ]
 })
 export class AppModule {}

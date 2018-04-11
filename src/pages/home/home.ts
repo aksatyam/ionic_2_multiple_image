@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { NavController, AlertController } from "ionic-angular";
 import { Camera, CameraOptions } from "@ionic-native/camera";
 import { AuthService } from "../../providers/auth-service/auth-service";
+import { ServiveSingletonProvider } from "../../providers/servive-singleton/servive-singleton";
 // import {
 //   FileTransfer,
 //   FileUploadOptions,
@@ -22,13 +23,15 @@ export class HomePage {
     public navCtrl: NavController,
     private camera: Camera,
     private alertCtrl: AlertController,
-    public authService: AuthService
+    public authService: AuthService,
+    public webServices: ServiveSingletonProvider
     //private transfer: FileTransfer, private file: File, private fileUploadOptions: FileUploadOptions
   ) {}
   //const fileTransfer = this.transfer.create();
 
   ngOnInit() {
     this.photos = [];
+    console.log(this.webServices.BASE_URL);
   }
 
   deletePhoto(index) {
@@ -72,13 +75,27 @@ export class HomePage {
         this.base64Image = "data:image/jpeg;base64," + imageData;
         this.photos.push(this.base64Image);
         this.photos.reverse();
-        this.sendData(imageData);
+        //this.sendData(imageData);
       },
       err => {
         console.log(err);
       }
     );
   }
+
+  SaveImage(){
+    if(this.photos){
+      //this.webServices.presentAlert('Message',this.photos);
+      let myKEyVals={ image1:this.photos[0],image2:this.photos[1],image3:this.photos[2],image4:this.photos[3],image5:this.photos[4]};
+      this.webServices.saveImageData(myKEyVals).then(data=>{
+        this.webServices.presentAlert('Response',data);
+      })
+    }
+    else{
+      this.webServices.presentAlert('Error','Please! take minimum 5 pics');
+    }
+  }
+
 
   sendData(imageData) {
     this.userData.imageB64 = imageData;
